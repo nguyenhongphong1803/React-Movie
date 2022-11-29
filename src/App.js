@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { Fragment, lazy, Suspense } from "react";
+import {Route, Routes} from "react-router-dom";
+import "swiper/scss";
+import Banner from "./components/banner/Banner";
+import Main from "./components/layout/Main";
+// import HomePage from "./pages/HomePage";
+// import MoviePage from "./pages/MoviePage";
+// import MovieDetailsPage from "./pages/MovieDetailsPage";
+
+
+const HomePage =lazy(() => import("./pages/HomePage"))
+const MoviePage =lazy(() => import("./pages/MoviePage"))
+const MovieDetailsPage =lazy(() => import("./pages/MovieDetailsPage"))
+
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <Fragment>
+    <Suspense fallback={<></>}>
+
+      <Routes>
+        <Route element = {<Main></Main>} >
+          <Route path="/" element={
+    
+            <>
+            <Banner></Banner>
+            <HomePage></HomePage>
+            </>
+          } ></Route>
+
+          <Route path="/movies" element={<MoviePage></MoviePage>}></Route>
+          <Route path="/movie/:movieId" element={<MovieDetailsPage></MovieDetailsPage>}></Route>
+        </Route>
+
+      </Routes>
+    </Suspense>
+    
+   
+    </Fragment>
+    
+  
 }
 
 export default App;
